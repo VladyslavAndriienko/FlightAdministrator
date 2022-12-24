@@ -1,0 +1,37 @@
+<template>
+    <div class="slds-modal__container">
+        <div class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                New Flight
+            </h1>
+        </div>
+        <div class="slds-modal__content slds-var-p-around_medium">
+            <div class="slds-size_1-of-1 slds-grid slds-wrap">
+                <div class="slds-size_1-of-2 slds-col slds-var-p-left_large slds-var-p-right_medium">
+                    <lightning-combobox 
+                        label="Departure Airport" 
+                        name="departureAirportName" 
+                        value={departureAirportValue} 
+                        options={airportOptions} 
+                        required="true" 
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-size_1-of-2 slds-col slds-var-p-left_medium slds-var-p-right_large">
+                    <lightning-combobox 
+                        label="Arrival Airport" 
+                        name="arrivalAirportName" 
+                        value={arrivalAirportValue} 
+                        options={airportOptions} 
+                        required="true"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+        </div>
+        <div class="slds-modal__footer">
+            <!-- <lightning-button class="slds-var-p-right_small" label="Cancel" variant="neutral" onclick={handleButtonCancel}></lightning-button> -->
+            <lightning-button label="Save" variant="brand" onclick={handleButtonSave}></lightning-button>
+        </div>
+    </div>
+</template>

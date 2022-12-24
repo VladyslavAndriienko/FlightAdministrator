@@ -1,0 +1,5 @@
+<aura:component access="global"
+                description="Invoke FlightCreate LWC"
+                implements="lightning:actionOverride,force:lightningQuickAction,forceCommunity:availableForAllPageTypes">
+	<c:flightCreate/>
+</aura:component>
