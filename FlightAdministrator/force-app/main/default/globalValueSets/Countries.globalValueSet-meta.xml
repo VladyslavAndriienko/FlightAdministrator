@@ -687,7 +687,7 @@
     </customValue>
     <customValue>
         <fullName>PL</fullName>
-        <default>true</default>
+        <default>false</default>
         <label>Poland</label>
     </customValue>
     <customValue>
