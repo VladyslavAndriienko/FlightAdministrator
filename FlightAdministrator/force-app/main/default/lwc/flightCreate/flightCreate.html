@@ -7,31 +7,45 @@
         </div>
         <div class="slds-modal__content slds-var-p-around_medium">
             <div class="slds-size_1-of-1 slds-grid slds-wrap">
-                <div class="slds-size_1-of-2 slds-col slds-var-p-left_large slds-var-p-right_medium">
-                    <lightning-combobox 
-                        label="Departure Airport" 
-                        name="departureAirportName" 
-                        value={departureAirportValue} 
-                        options={airportOptions} 
-                        required="true" 
-                        onchange={handleChange}>
-                    </lightning-combobox>
-                </div>
-                <div class="slds-size_1-of-2 slds-col slds-var-p-left_medium slds-var-p-right_large">
-                    <lightning-combobox 
-                        label="Arrival Airport" 
-                        name="arrivalAirportName" 
-                        value={arrivalAirportValue} 
-                        options={airportOptions} 
-                        required="true"
-                        onchange={handleChange}>
-                    </lightning-combobox>
-                </div>
+                <template if:false={areDetailsVisible}>
+                    <div class="slds-size_1-of-2 slds-col slds-var-p-left_large slds-var-p-right_medium">
+                        <lightning-combobox 
+                            label="Departure Airport" 
+                            name="departureAirportName" 
+                            value={departureAirportId} 
+                            options={airportOptions} 
+                            required="true" 
+                            onchange={handleChangeAirport}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-size_1-of-2 slds-col slds-var-p-left_medium slds-var-p-right_large">
+                        <lightning-combobox 
+                            label="Arrival Airport" 
+                            name="arrivalAirportName" 
+                            value={arrivalAirportId} 
+                            options={airportOptions} 
+                            required="true"
+                            onchange={handleChangeAirport}>
+                        </lightning-combobox>
+                    </div>
+                </template>
+                <template if:true={areDetailsVisible}>
+                        Flight Name: {flightName}
+                        <br>Departure Airport IATA Code: {departureAirportIataCode}
+                        <br>Arrival Airport IATA Code: {arrivalAirportIataCode}
+                        <br>Flight Distance (km): {flightDistance}
+                </template>
             </div>
         </div>
         <div class="slds-modal__footer">
-            <!-- <lightning-button class="slds-var-p-right_small" label="Cancel" variant="neutral" onclick={handleButtonCancel}></lightning-button> -->
-            <lightning-button label="Save" variant="brand" onclick={handleButtonSave}></lightning-button>
+            <template if:false={areDetailsVisible}>
+                <lightning-button class="slds-var-p-right_small" label="Cancel" variant="neutral" onclick={handleButtonCancel}></lightning-button>
+                <lightning-button class="slds-var-p-right_small" label="Save" variant="brand" onclick={handleButtonSave}></lightning-button>
+                <lightning-button label="Show Flight Result" variant="brand" onclick={handleButtonShowFlightResult}></lightning-button>
+            </template>
+            <template if:true={areDetailsVisible}>
+                <lightning-button class="slds-var-p-right_small" label="Close" variant="brand" onclick={handleButtonClose}></lightning-button>
+            </template>
         </div>
     </div>
 </template>
