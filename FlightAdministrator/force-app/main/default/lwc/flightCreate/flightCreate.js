@@ -1,25 +1,30 @@
 import { LightningElement, wire } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import fetchAirports from '@salesforce/apex/FlightController.fetchAirports';
-import fetchFlights from '@salesforce/apex/FlightController.fetchFlights';
+import fetchFlightByDepartureAirportIdAndArrivalAirportId from '@salesforce/apex/FlightController.fetchFlightByDepartureAirportIdAndArrivalAirportId';
 import saveFlight from '@salesforce/apex/FlightController.saveFlight';
 
 export default class FlightCreate extends LightningElement {
-    departureAirportLabel;
-    departureAirportValue;
 
-    arrivalAirportLabel;
-    arrivalAirportValue;
+    departureAirportId;
+    arrivalAirportId;
+
+    departureAirportIataCode;
+    arrivalAirportIataCode;
+
+    flightId;
+    flightName;
+    flightDistance;
 
     airportOptions = [];
-    savedtFlight = [];
+
+    areDetailsVisible = false;
 
     @wire(fetchAirports)
     pupulateAirportOptions({error, data}) {
         if(data) {
-            this.airportAllData = [...data];
             let airportData = [];
+            this.airportAllData = [...data];
 
             data.forEach(
                 event => {
@@ -36,26 +41,48 @@ export default class FlightCreate extends LightningElement {
         }
     }
 
-    handleChange(event) {
+    handleChangeAirport(event) {
         if(event.target.name == 'departureAirportName') {
-            this.departureAirportLabel = event.target.label;
-            this.departureAirportValue = event.target.value;
+            this.departureAirportId = event.target.value;
+            this.departureAirportIataCode = this.airportOptions.find(option => option.value == this.departureAirportId).label;
         } else if(event.target.name == 'arrivalAirportName') {
-            this.arrivalAirportLabel = event.target.label;
-            this.arrivalAirportValue = event.target.value;
+            this.arrivalAirportId = event.target.value;
+            this.arrivalAirportIataCode = this.airportOptions.find(option => option.value == this.arrivalAirportId).label;
         }
     }
 
+    setFlightResult() {
+        fetchFlightByDepartureAirportIdAndArrivalAirportId(
+            {
+                departureAirportId: this.departureAirportId,
+                arrivalAirportId: this.arrivalAirportId
+            }
+        ).then((result) => {
+            this.flightId = result.Id;
+            this.flightName = result.Name;
+            this.flightDistance = result.FlightDistance__c;
+        });
+    }
+
     handleButtonCancel() {
-        console.log('Method handleButtonCancel is calling.');
+        window.location = window.location.origin + "/lightning/o/Flight__c/list?filterName=Recent";
     }
 
     handleButtonSave() {
-        let airportIdsForFlight = [];
+        saveFlight(
+            {
+                departureAirportId: this.departureAirportId,
+                arrivalAirportId: this.arrivalAirportId
+            }
+        );
+    }
 
-        airportIdsForFlight.push(this.departureAirportValue);
-        airportIdsForFlight.push(this.arrivalAirportValue);
+    handleButtonClose() {
+        window.location = window.location.origin + "/" + this.flightId;
+    }
 
-        saveFlight({airportIds: airportIdsForFlight});
+    handleButtonShowFlightResult() {
+        this.areDetailsVisible = true;
+        this.setFlightResult();
     }
 }
