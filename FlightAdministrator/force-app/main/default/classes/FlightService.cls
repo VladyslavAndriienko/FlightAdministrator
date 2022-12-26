@@ -4,17 +4,18 @@
 public class FlightService {
 
     /**
-    * Insert new Flight baseed on Airport Ids.
-    * @param airportIds list of aiport ids
+    * Insert new Flight record based on departure airport and arrival airport.
+    * @param departureAirportId departure airport id
+    * @param arrivalAirportId arrival airport id
     */
-    public static void handleSaveFlight(List<Id> airportIds) {
-        if(airportIds.isEmpty()) {
+    public static void handleSaveFlight(Id departureAirportId, Id arrivalAirportId) {
+        if(departureAirportId == null || arrivalAirportId == null) {
             return;
         }
 
         insert new Flight__c(
-            DepartureAirport__c = airportIds.get(0),
-            ArrivalAirport__c = airportIds.get(1)
+            DepartureAirport__c = departureAirportId,
+            ArrivalAirport__c = arrivalAirportId
         );
     }
     
