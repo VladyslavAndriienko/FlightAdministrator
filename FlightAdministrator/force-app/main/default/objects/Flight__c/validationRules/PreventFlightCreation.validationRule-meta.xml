@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreventFlightCreation</fullName>
+    <active>true</active>
+    <description>Block possibility to create or edit Flight record with the same value for ArrivalAirport__c and DepartureAirport__c.</description>
+    <errorConditionFormula>ArrivalAirport__c == DepartureAirport__c</errorConditionFormula>
+    <errorMessage>Departure Airport and Arrival Airport must be different.</errorMessage>
+</ValidationRule>
